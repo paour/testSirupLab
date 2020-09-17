@@ -1,16 +1,16 @@
-import React from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
+import React from "react";
+import Dropdown from "react-bootstrap/Dropdown";
+import BookList from "./book/BookList"
 import {
     BrowserRouter as Router,
+    Link as Link,
     Switch,
     Route,
-    useParams
 } from "react-router-dom";
 
 import './App.css';
 
-function App() {
-
+export default  function App() {
     const levels = {
         "lycée": [
             {
@@ -47,8 +47,9 @@ function App() {
     }
 
     return (
-        <div>
+        <Router>
             <header className="App App-header">
+                <Link to="/books" className="btn btn-basic">Accueil</Link>
                 {Object.keys(levels).map(key=>{
                     console.log('App levels.map :', key)
                     return (
@@ -70,30 +71,23 @@ function App() {
                 })}
             </header>
             <section id="content">
-                <Router>
                     <Switch>
                         <Route path={`/books/:school/:level`}>
-                            <Level/>
+                            <BookList levels={levels}/>
                         </Route>
                         <Route path="/books/:school">
-                            <Level/>
+                            <BookList levels={levels}/>
                         </Route>
-                        <Route path="/books/">
-                            <div>Accueil</div>
+                        <Route path="/books">
+                            <BookList levels={levels}/>
                         </Route>
                         <Route path="/">
                             <div>Accueil</div>
                         </Route>
                     </Switch>
-                </Router>
             </section>
-        </div>
+        </Router>
     );
 }
 
-function Level() {
-    let { school,level } = useParams();
-    return <h2>{school} {level?'Classe de '+level:'Tous les niveaux'}</h2>;
-}
 
-export default App;
